@@ -1,0 +1,19 @@
+﻿@using DragandDrop.Data
+<h3>Job</h3>
+
+<li class="draggable" draggable="true" title="@TaskModel.Detail" @ondragstart="@(()=>HandleDragStart(TaskModel))">
+    <p class="description">
+        @TaskModel.Detail
+    </p>
+    <p class="last-updated"><small>Updated Time</small>@TaskModel.UpDatedTime.ToString("HH:mm.ss tt")</p>  
+
+</li>
+@code { 
+    [CascadingParameter] TestTaskContainer Container { get; set; }
+    [Parameter] public TaskModel TaskModel { get; set; }
+
+    private void HandleDragStart(TaskModel selectedJob)
+    {
+        Container.PayLoad = selectedJob;
+    }
+}

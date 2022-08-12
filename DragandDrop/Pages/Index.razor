@@ -1,0 +1,40 @@
+﻿@page "/"
+@using DragandDrop.Data
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<TestTaskContainer Tasks="Tasks" OnStatusUpdated="HandleStatuseUpdated">
+    <TestTaskList ListStatus="TaskStatuses.Todo" AllowedStatuses="@(new TaskStatuses[] { TaskStatuses.Started})"/>
+    <TestTaskList ListStatus="TaskStatuses.Started" AllowedStatuses="@(new TaskStatuses[] { TaskStatuses.Todo})"/>
+    <TestTaskList ListStatus="TaskStatuses.Completed" AllowedStatuses="@(new TaskStatuses[] { TaskStatuses.Started})"/>
+</TestTaskContainer>
+<hr/>
+@foreach (var task in Tasks)
+{
+    <p>@task.Detail-<strong>@task.Status</strong></p>
+}
+@code
+{
+    List<TaskModel> Tasks = new List<TaskModel>();
+    string lastUpdatedJob = "";
+
+    protected override void OnInitialized()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            Tasks.Add(new TaskModel
+            {
+                Id = i,
+                Detail = "Task" + i,
+                Status = TaskStatuses.Todo,
+                UpDatedTime = DateTime.Now
+            });
+        }
+    }
+
+    void HandleStatuseUpdated(TaskModel updatedJob)
+    {
+        lastUpdatedJob = updatedJob.Detail;
+    }
+}
